@@ -21,11 +21,26 @@ function getLUT(pixelRepresentation, lutDataSet) {
   };
 
   // console.log("minValue=", minValue, "; maxValue=", maxValue);
+  const lutData = lutDataSet.elements.x00283006
   for (let i = 0; i < numLUTEntries; i++) {
     if (pixelRepresentation === 0) {
-      lut.lut[i] = lutDataSet.uint16('x00283006', i);
+      // 根据标准 00283006(lutdata) 应该是US或者OW类型, 但是我们线上应用的时候,
+      // 发现部分厂商传递lutdata的时候采用的是ss类型, 导致解析除了问题
+      // 我们根据numLUTEntries和bytearray里面lut data的length做比较, 如果比较为1:1 则证明无需处理
+      if (lutData.length / numLUTEntries === 1) {
+        lut.lut[i] = lutDataSet.byteArray[lutData.dataOffset + i]
+      } else {
+        lut.lut[i] = lutDataSet.uint16('x00283006', i);
+      }
     } else {
-      lut.lut[i] = lutDataSet.int16('x00283006', i);
+      // 根据标准 00283006(lutdata) 应该是US或者OW类型, 但是我们线上应用的时候,
+      // 发现部分厂商传递lutdata的时候采用的是ss类型, 导致解析除了问题
+      // 我们根据numLUTEntries和bytearray里面lut data的length做比较, 如果比较为1:1 则证明无需处理
+      if (lutData.length / numLUTEntries === 1) {
+        lut.lut[i] = lutDataSet.byteArray[lutData.dataOffset + i]
+      } else {
+        lut.lut[i] = lutDataSet.int16('x00283006', i);
+      }
     }
   }
 
