@@ -1,4 +1,3 @@
-import metaDataManager from './metaDataManager.js';
 import getPixelData from './getPixelData.js';
 import createImage from '../createImage.js';
 
@@ -63,15 +62,6 @@ function loadImage(imageId, options) {
   const uri = imageId.substring(7);
 
   const promise = new Promise((resolve, reject) => {
-    // check to make sure we have metadata for this imageId
-    const metaData = metaDataManager.get(imageId);
-
-    if (metaData === undefined) {
-      const error = new Error(`no metadata for imageId ${imageId}`);
-
-      return reject(error);
-    }
-
     // TODO: load bulk data items that we might need
     const mediaType = 'multipart/related; type="application/octet-stream"'; // 'image/dicom+jp2';
 
