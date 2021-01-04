@@ -7,18 +7,18 @@ import {
 } from './colorSpaceConverters/index.js';
 
 function convertRGB(imageFrame, rgbaBuffer) {
-  if (imageFrame.planarConfiguration === 0) {
-    convertRGBColorByPixel(imageFrame.pixelData, rgbaBuffer);
-  } else {
+  if (imageFrame.planarConfiguration === 1) {
     convertRGBColorByPlane(imageFrame.pixelData, rgbaBuffer);
+  } else {
+    convertRGBColorByPixel(imageFrame.pixelData, rgbaBuffer);
   }
 }
 
 function convertYBRFull(imageFrame, rgbaBuffer) {
-  if (imageFrame.planarConfiguration === 0) {
-    convertYBRFullByPixel(imageFrame.pixelData, rgbaBuffer);
-  } else {
+  if (imageFrame.planarConfiguration === 1) {
     convertYBRFullByPlane(imageFrame.pixelData, rgbaBuffer);
+  } else {
+    convertYBRFullByPixel(imageFrame.pixelData, rgbaBuffer);
   }
 }
 
